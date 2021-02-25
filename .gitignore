@@ -1,0 +1,4 @@
+logs/*
+data/*
+snakemake.err
+snakemake.out
