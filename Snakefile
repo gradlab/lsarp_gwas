@@ -49,6 +49,8 @@ rule annotation:
         time=lambda wildcards, attempt: attempt * 30,
     log:
         "logs/annotation/{batch}/{sample}.log",
+    conda:
+        "conda_envs/prokka.yml"
     shell:
         """
         mkdir -p annotations/{params.batch}
@@ -74,6 +76,8 @@ rule roary:
         time=lambda wildcards, attempt: attempt * 1200,
     log:
         "logs/roary.log",
+    conda:
+        "conda_envs/roary.yml"
     shell:
         """
         roary -p 12 -z -e -n -v -s -i 95 -f ./data/roary/roary {input}
@@ -92,6 +96,8 @@ rule gubbins:
         time=lambda wildcards, attempt: attempt * 1200,
     log:
         "logs/gubbins.log",
+    conda:
+        "conda_envs/gubbins.yml"
     shell:
         """
         mkdir -p data/gubbins
