@@ -8,12 +8,18 @@ This pipeline generates a table of unitigs (unique sequences that are present in
 
 The general pipeline is as follows:
 
+```
 de novo assemblies -> annotations -> core genome alignment -> phylogeny -> similarity matrix
-                   -> unitigs
+        |
+        V
+      unitigs
 
 similiarity matrix + unitigs + phenotype -> LMM -> significant unitigs -> annotated unitigs -> phylogeny annotation
-                                                                                            -> Manhattan plot
+                                                                                   |
+                                                                                   V        
+                                                                            Manhattan plot
 
+```
 Details of the software used can be found by reading the Snakefile.
 
 ## Software Requirements
