@@ -2,3 +2,5 @@ logs/*
 data/*
 snakemake.err
 snakemake.out
+.snakemake/*
+software/*
