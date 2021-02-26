@@ -1,5 +1,7 @@
 #!/bin/bash
-#SBATCH -c 1
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
 #SBATCH --mem=1000
 #SBATCH -p cpu2019
 #SBATCH -t 3-00:00

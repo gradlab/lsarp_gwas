@@ -19,6 +19,7 @@ with open("data/sequenced_isolates.txt", "r") as infile:
 
 localrules:
     all,
+    create_unitig_input,
     filter_significant,
 
 
@@ -40,7 +41,6 @@ rule annotation:
     params:
         name="{sample}",
         batch="{batch}",
-        partition="cpu2019",
     output:
         gff="data/annotations/{batch}/{sample}/{sample}.gff",
     resources:
@@ -68,7 +68,6 @@ rule roary:
         "data/roary/roary/gene_presence_absence.csv",
         "data/roary/roary/core_gene_alignment.aln",
     params:
-        partition="cpu2019",
     resources:
         cpus=12,
         mem_mb=lambda wildcards, attempt: attempt * 16000,
@@ -87,7 +86,6 @@ rule gubbins:
     output:
         "data/gubbins/gubbins/core_alignment.final_tree.tre",
     params:
-        partition="cpu2019",
     resources:
         cpus=12,
         mem_mb=lambda wildcards, attempt: attempt * 16000,
@@ -101,25 +99,29 @@ rule gubbins:
         """
 
 
-def create_unitig_input(s, b):
-    with open("data/unitigs/strain_list.txt", "w") as outfile:
-        outfile.write("wgs_id\tpath\n")
-        for sample, batch in zip(s, b):
-            if batch == "batch_2":
-                path = "/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/{batch}/results/{sample}/LSARP_Results/Assembly/{sample}.genome.fa"
-            else:
-                path = "/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/{batch}/final_results/{sample}/Assembly/{sample}.genome.fa"
-            outfile.write(f"{sample}\t{path}\n")
-    return "data/unitigs/strain_list.txt"
+rule create_unitig_input:
+    input:
+        "data/sequenced_isolates.txt",
+        "data/contaminated_samples.txt",
+    output:
+        strain_list="data/unitigs/strain_list.txt"
+    run:
+        with open(output.strain_list, "w") as outfile:
+            outfile.write("wgs_id\tpath\n")
+            for sample, batch in zip(SAMPLES, BATCHES):
+                if batch == "batch_2":
+                    path = f"/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/{batch}/results/{sample}/LSARP_Results/Assembly/{sample}.genome.fa"
+                else:
+                    path = f"/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/{batch}/final_results/{sample}/Assembly/{sample}.genome.fa"
+                outfile.write(f"{sample}\t{path}\n")
 
 
 rule unitigs:
     input:
-        strain_list=create_unitig_input(SAMPLES, BATCHES),
+        strain_list="data/unitigs/strain_list.txt",
     output:
         "data/unitigs/s_aureus_unitigs/unitigs.txt",
     params:
-        partition="cpu2019",
         directory="data/unitigs/s_aureus_unitigs/",
     resources:
         cpus=4,
@@ -130,7 +132,11 @@ rule unitigs:
     conda:
         "conda_envs/unitig-counter.yml"
     shell:
-        "unitig-counter -strains {input.strain_list} -output {params.directory} -nb-cores {resources.cpus}"
+        """
+        unitig-counter -strains {input.strain_list} -output unitigs/ -nb-cores {resources.cpus}
+        mv unitigs/* {params.directory}
+        rmdir unitigs/
+        """
 
 
 rule similarity_matrix:
@@ -139,7 +145,6 @@ rule similarity_matrix:
     output:
         matrix="data/gubbins/gubbins/similarity_matrix.txt",
     params:
-        partition="cpu2019",
     resources:
         cpus=1,
         mem_mb=lambda wildcards, attempt: attempt * 10000,
@@ -161,7 +166,6 @@ rule lmm_gwas:
         patterns="data/{phenotype}/unitig_patterns.txt",
         significance="data/{phenotype}/unitig_significance.txt",
     params:
-        partition="cpu2019",
     resources:
         cpus=1,
         mem_mb=lambda wildcards, attempt: attempt * 10000,
@@ -180,7 +184,6 @@ rule pyseer_count_patterns:
     output:
         "data/{phenotype}/significance_limits.txt",
     params:
-        partition="short",
     resources:
         cpus=1,
         mem_mb=1000,
