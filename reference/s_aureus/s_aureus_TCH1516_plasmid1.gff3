@@ -1,0 +1,10 @@
+##sequence-region NC_012417.1 1 3125
+##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=451516
+NC_012417.1	RefSeq	region	1	3125	.	+	.	ID=NC_012417.1:1..3125;Dbxref=taxon:451516;Is_circular=true;Name=pUSA01-HOU;gbkey=Src;genome=plasmid;mol_type=genomic DNA;note=derived from methicillin-resistant clonal population USA300;plasmid-name=pUSA01-HOU;strain=USA300_TCH1516;sub-species=aureus
+NC_012417.1	RefSeq	gene	1	996	.	+	.	ID=gene-USA300HOU_RS14890;Name=USA300HOU_RS14890;gbkey=Gene;gene_biotype=protein_coding;locus_tag=USA300HOU_RS14890;old_locus_tag=USA300HOU_pUSA10HOUMR0001
+NC_012417.1	Protein Homology	CDS	1	996	.	+	0	ID=cds-WP_001199892.1;Parent=gene-USA300HOU_RS14890;Dbxref=Genbank:WP_001199892.1;Name=WP_001199892.1;gbkey=CDS;inference=COORDINATES: similar to AA sequence:RefSeq:WP_001199895.1;locus_tag=USA300HOU_RS14890;product=protein rep;protein_id=WP_001199892.1;transl_table=11
+NC_012417.1	RefSeq	gene	1579	1767	.	+	.	ID=gene-USA300HOU_RS14895;Name=USA300HOU_RS14895;gbkey=Gene;gene_biotype=protein_coding;locus_tag=USA300HOU_RS14895;old_locus_tag=USA300HOU_pUSA10HOUMR0003
+NC_012417.1	Protein Homology	CDS	1579	1767	.	+	0	ID=cds-WP_001039248.1;Parent=gene-USA300HOU_RS14895;Dbxref=Genbank:WP_001039248.1;Name=WP_001039248.1;gbkey=CDS;inference=COORDINATES: similar to AA sequence:RefSeq:WP_001030810.1;locus_tag=USA300HOU_RS14895;product=hypothetical protein;protein_id=WP_001039248.1;transl_table=11
+NC_012417.1	RefSeq	gene	2093	2674	.	-	.	ID=gene-USA300HOU_RS14900;Name=USA300HOU_RS14900;gbkey=Gene;gene_biotype=protein_coding;locus_tag=USA300HOU_RS14900;old_locus_tag=USA300HOU_pUSA10HOUMR0005
+NC_012417.1	Protein Homology	CDS	2093	2674	.	-	0	ID=cds-WP_000991705.1;Parent=gene-USA300HOU_RS14900;Dbxref=Genbank:WP_000991705.1;Name=WP_000991705.1;gbkey=CDS;inference=COORDINATES: similar to AA sequence:RefSeq:WP_000991705.1;locus_tag=USA300HOU_RS14900;product=hypothetical protein;protein_id=WP_000991705.1;transl_table=11
+

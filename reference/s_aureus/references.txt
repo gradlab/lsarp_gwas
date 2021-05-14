@@ -1,0 +1,15 @@
+reference/s_aureus/s_aureus_NCTC8325_chromosome.fasta  reference/s_aureus/s_aureus_NCTC8325_chromosome.gff3    ref
+reference/s_aureus/s_aureus_TCH1516_chromosome.fasta   reference/s_aureus/s_aureus_TCH1516_chromosome.gff3 ref
+reference/s_aureus/s_aureus_TCH1516_plasmid1.fasta reference/s_aureus/s_aureus_TCH1516_plasmid1.gff3   ref
+reference/s_aureus/s_aureus_TCH1516_plasmid2.fasta  reference/s_aureus/s_aureus_TCH1516_plasmid2.gff3   ref
+reference/s_aureus/s_aureus_N315_chromosome.fasta  reference/s_aureus/s_aureus_N315_chromosome.gff3    ref
+reference/s_aureus/s_aureus_N315_plasmid.fasta reference/s_aureus/s_aureus_N315_plasmid.gff3   ref
+reference/s_aureus/s_aureus_MRSA252_chromosome.fasta   reference/s_aureus/s_aureus_MRSA252_chromosome.gff3    ref
+reference/s_aureus/s_aureus_ST20130938_chromosome.fasta    reference/s_aureus/s_aureus_ST20130938_chromosome.gff3  ref
+reference/s_aureus/s_aureus_ST20130938_plasmid.fasta   reference/s_aureus/s_aureus_ST20130938_plasmid.gff3 ref
+reference/s_aureus/s_aureus_CA-347_chromosome.fasta    reference/s_aureus/s_aureus_CA-347_chromosome.gff3 ref
+reference/s_aureus/s_aureus_CA-347_plasmid.fasta   reference/s_aureus/s_aureus_CA-347_plasmid.gff3 ref
+reference/s_aureus/s_aureus_MW2_chromosome.fasta   reference/s_aureus/s_aureus_MW2_chromosome.gff3 ref
+reference/s_aureus/s_aureus_MSSA476_chromosome.fasta   reference/s_aureus/s_aureus_MSSA476_chromosome.gff3 ref
+reference/s_aureus/s_aureus_MSSA476_plasmid.fasta  reference/s_aureus/s_aureus_MSSA476_plasmid.gff3    ref
+reference/s_aureus/s_aureus_HO50960412_chromosome.fasta    reference/s_aureus/s_aureus_HO50960412_chromosome.gff3  ref

@@ -220,7 +220,7 @@ rule filter_significant:
 rule annotate:
     input:
         unitig_filtered="data/{phenotype}/unitig_significance_filtered.txt",
-        reference="data/reference/references.txt"
+        reference="reference/s_aureus/references.txt"
     output:
         "data/{phenotype}/unitig_significance_annotated.txt"
     resources:
@@ -237,7 +237,7 @@ rule annotate:
 rule manhattan_input:
     input:
         unitigs="data/{phenotype}/unitig_significance.txt",
-        reference_genome="data/reference/s_aureus_{reference}.fasta"
+        reference_genome="reference/s_aureus/s_aureus_{reference}.fasta"
     output:
         "data/{phenotype}/unitigs_{reference}_position.txt"
     resources:
@@ -254,7 +254,7 @@ rule manhattan_input:
 rule annotate_onereference_allunitigs:
     input:
         significance="data/{phenotype}/unitig_significance.txt",
-        reference_file="data/reference/references_{reference}.txt"
+        reference_file="reference/s_aureus/references_{reference}.txt"
     output:
         "data/{phenotype}/unitig_annotated_{reference}.txt"
     resources:
