@@ -22,6 +22,25 @@ similiarity matrix + unitigs + phenotype -> LMM -> significant unitigs -> annota
 ```
 Details of the software used can be found by reading the Snakefile.
 
+### Core genome alignment and phylogeny
+Genomes are annotated with Prokka v 1.14 [1] using genus specific databases when available, and the core genome is identified using Roary v 3.13 [2] with a 95% identity cutoff and aligned with MAFFT [3]. To understand the population structure of our dataset, we generate a maximum likelihood phylogeny [4], which is based on the core genome alignment.
+### Unitig presence matrix
+To summarize the genomic variation in our sample, unitigs (unique sequences of variable length) are identified and counted using unitig-counter (https://github.com/johnlees/unitig-counter), which uses a compressed de Bruijn graph and is based on the approach in DBGWAS [5].
+### Genome wide association study (GWAS) using linear mixed model (LMM)
+To identify genetic variants associated with a phenotype of interest, we perform bacterial GWAS as implemented in pyseer v 1.3.6 [6]. We use LMM to control for population structure by including a similarity matrix generated from the phylogeny in the model. Unitig significance is determined with a likelihood ratio test and a Bonferroni-corrected p-value threshold based on the number of unique unitig presence/absence patterns.
+### Unitig annotation and visualization 
+Unitigs are annotated by mapping to a panel of closed, reference genomes representing each of the major clades or clonal complexes present in the dataset. Additionally, all unitigs are mapped to a single reference genome containing the gene content associated with the most significant unitigs for visualization (i.e. Manhattan plots). The presence of significant unitigs is displayed across the phylogeny using ITOL [7].
+### References
+1. 	Seemann T. Prokka: rapid prokaryotic genome annotation. Bioinformatics 2014; 30:2068–2069. 
+2. 	Page AJ, Cummins CA, Hunt M, et al. Roary: rapid large-scale prokaryote pan genome analysis. Bioinformatics 2015; 31:3691–3693. 
+3. 	Katoh K, Standley DM. MAFFT: iterative refinement and additional methods. Methods Mol Biol Clifton NJ 2014; 1079:131–146. 
+4. 	Croucher NJ, Page AJ, Connor TR, et al. Rapid phylogenetic analysis of large samples of recombinant bacterial whole genome sequences using Gubbins. Nucleic Acids Res 2015; 43:e15–e15. 
+5. 	Jaillard M, Lima L, Tournoud M, et al. A fast and agnostic method for bacterial genome-wide association studies: Bridging the gap between k-mers and genetic events. PLOS Genet 2018; 14:e1007758. 
+6. 	Lees JA, Galardini M, Bentley SD, Weiser JN, Corander J. pyseer: a comprehensive tool for microbial pangenome-wide association studies. Bioinforma Oxf Engl 2018; 34:4310–4312. 
+7. 	Letunic I, Bork P. Interactive Tree Of Life (iTOL) v4: recent updates and new developments. Nucleic Acids Res.
+
+
+
 ## Software Requirements
 
 This pipeline is implemented in snakemake. Additionally, there are some helper scripts that are not packaged with pyseer via conda, so the pyseer git repository should be cloned to a software/ directory. Other required software is installed via conda as the pipeline runs. 
