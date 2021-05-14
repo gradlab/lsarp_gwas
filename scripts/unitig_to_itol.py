@@ -3,13 +3,24 @@ import os
 import sys
 import pandas as pd
 import gzip
+import argparse
 
-# unitig_to_itol.py ACGTAGTCATGC genename color
 
-kmers = '/bulk/LSARP/genomics/analyses/GWAS/data/unitigs/s_aureus_unitigs/unitigs.txt'
-kmer = sys.argv[1]
-gene = sys.argv[2]
-color = sys.argv[3]
+def get_args():
+    parser = argparse.ArgumentParser(description="Create ITOL annotation file for a unitig")
+    parser.add_argument("unitig_file", help="Unitig presence/absence file")
+    parser.add_argument("unitig", help="Specific unitig of interest")
+    parser.add_argumet("unitig_name", help="Unitig name (e.g. what gene does it map to?)")
+    parser.add_argument("color", help="HEX code for color of annotation")
+    return parser.parse_args()
+
+args = get_args()
+
+kmers = args.unitig_file
+kmer = args.unitig
+gene = args.unitig_name
+color = args.color
+
 with open(kmers, 'r') as dat:
     for line in dat:
         if kmer == line.rstrip().split('|')[0].strip():

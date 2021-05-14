@@ -89,6 +89,10 @@ Job submission script for running the pipeline (submit with `sbatch`).
 ### conda_envs/
 Files describing conda environments for required pipeline software. 
 
+### reference/
+Directories for each species containing finished reference genomes and annotations to be used for
+unitig mapping.
+
 ### scripts/
 
 #### fastbaps.R
@@ -101,6 +105,10 @@ Gets the appropriate Bonferroni corrected significance threshold from pyseer out
 #### get_mlst.py
 Summarizes MLST output from pipeline results for all samples.
 (Not currently used by GWAS pipeline)
+
+#### unitig_to_itol.py
+Makes an annotation file that can be dragged and dropped into ITOL showing the presence and absence of a specific
+unitig.
 
 ## Input Details
 
@@ -148,6 +156,7 @@ GWAS_directory/
         contaminated_isolates.txt
         phenotype1/
             phenotype1.txt
+    reference/
     scripts/
     software/
         pyseer/
