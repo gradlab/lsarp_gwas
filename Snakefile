@@ -25,7 +25,9 @@ localrules:
 
 rule all:
     input:
-        "data/biomass_24/unitig_significance_filtered.txt",
+        "data/CLX/unitig_significance_annotated.txt",
+        "data/CLX/unitigs_TCH1516_chromosome_position.txt",
+        "data/CLX/unitig_annotated_TCH1516.txt",
 
 
 def get_path(wildcards):
@@ -213,4 +215,55 @@ rule filter_significant:
         """
         module load R
         Rscript scripts/filter_significant_unitigs.R {input.limit} {input.unitig_significance} {output}
+        """
+
+rule annotate:
+    input:
+        unitig_filtered="data/{phenotype}/unitig_significance_filtered.txt",
+        reference="data/reference/references.txt"
+    output:
+        "data/{phenotype}/unitig_significance_annotated.txt"
+    resources:
+        cpus=1,
+        mem_mb=1000,
+        time=10,
+    conda:
+        "conda_envs/pyseer.yml"
+    shell:
+        """
+        annotate_hits_pyseer {input.unitig_filtered} {input.reference} {output}
+        """
+
+rule manhattan_input:
+    input:
+        unitigs="data/{phenotype}/unitig_significance.txt",
+        reference_genome="data/reference/s_aureus_{reference}.fasta"
+    output:
+        "data/{phenotype}/unitigs_{reference}_position.txt"
+    resources:
+        cpus=1,
+        mem_mb=1000,
+        time=10
+    conda:
+        "conda_envs/pyseer.yml"
+    shell:
+        """
+        phandango_mapper {input.unitigs} {input.reference_genome} {output}
+        """
+
+rule annotate_onereference_allunitigs:
+    input:
+        significance="data/{phenotype}/unitig_significance.txt",
+        reference_file="data/reference/references_{reference}.txt"
+    output:
+        "data/{phenotype}/unitig_annotated_{reference}.txt"
+    resources:
+        cpus=1,
+        mem_mb=1000,
+        time=10,
+    conda:
+        "conda_envs/pyseer.yml"
+    shell:
+        """
+        annotate_hits_pyseer {input.significance} {input.reference_file} {output}
         """
