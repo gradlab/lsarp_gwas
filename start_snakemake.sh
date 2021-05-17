@@ -8,7 +8,7 @@
 #SBATCH -o snakemake.out
 #SBATCH -e snakemake.err
 #SBATCH --mail-type=END
-#SBATCH --mail-user=mortimer@hsph.harvard.edu
+#SBATCH --mail-user=
 
 mkdir -p logs/slurm
 snakemake --profile slurm
