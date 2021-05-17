@@ -10,7 +10,7 @@ def get_args():
     parser = argparse.ArgumentParser(description="Create ITOL annotation file for a unitig")
     parser.add_argument("unitig_file", help="Unitig presence/absence file")
     parser.add_argument("unitig", help="Specific unitig of interest")
-    parser.add_argumet("unitig_name", help="Unitig name (e.g. what gene does it map to?)")
+    parser.add_argument("unitig_name", help="Unitig name (e.g. what gene does it map to?)")
     parser.add_argument("color", help="HEX code for color of annotation")
     return parser.parse_args()
 
