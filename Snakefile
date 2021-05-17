@@ -257,7 +257,7 @@ rule single_reference_file:
     input:
         reference_file="reference/s_aureus/references.txt"
     output:
-        "reference/s_aureus/single_reference_{reference}_tmp.txt"
+        temp("reference/s_aureus/single_reference_{reference}_tmp.txt")
     params:
         reference="{reference}"
     shell:
