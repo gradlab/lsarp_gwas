@@ -257,7 +257,7 @@ rule single_reference_file:
     input:
         reference_file="reference/s_aureus/references.txt"
     output:
-        temp("reference/s_aureus/single_reference_{reference}_tmp.txt")
+        "reference/s_aureus/single_reference_{reference}_tmp.txt"
     params:
         reference="{reference}"
     shell:
@@ -289,8 +289,9 @@ rule manhattan_plot:
     output:
         plot="data/{phenotype}/manhattan_plot_{reference}.pdf"
     params:
-        color="#1f78b4"
+        color="'#1f78b4'"
     shell:
         """
-        scripts/manhattan_plot.R {input.limit} {input.unitigs} {params.color} {output.plot}
+        module load R
+        Rscript scripts/manhattan_plot.R {input.limit} {input.unitigs} {params.color} {output.plot}
         """
