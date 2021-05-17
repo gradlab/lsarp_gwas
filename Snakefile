@@ -21,13 +21,15 @@ localrules:
     all,
     create_unitig_input,
     filter_significant,
+    single_reference_file,
+    manhattan_plot
 
 
 rule all:
     input:
         "data/CLX/unitig_significance_annotated.txt",
         "data/CLX/unitigs_TCH1516_chromosome_position.txt",
-        "data/CLX/unitig_annotated_TCH1516.txt",
+        "data/CLX/manhattan_plot_TCH1516_chromosome.pdf"
 
 
 def get_path(wildcards):
@@ -234,7 +236,7 @@ rule annotate:
         annotate_hits_pyseer {input.unitig_filtered} {input.reference} {output}
         """
 
-rule manhattan_input:
+rule phandango_input:
     input:
         unitigs="data/{phenotype}/unitig_significance.txt",
         reference_genome="reference/s_aureus/s_aureus_{reference}.fasta"
@@ -251,10 +253,22 @@ rule manhattan_input:
         phandango_mapper {input.unitigs} {input.reference_genome} {output}
         """
 
+rule single_reference_file:
+    input:
+        reference_file="reference/s_aureus/references.txt"
+    output:
+        temp("reference/s_aureus/single_reference_{reference}_tmp.txt")
+    params:
+        reference="{reference}"
+    shell:
+        """
+        grep {params.reference} {input.reference_file} > {output}
+        """
+
 rule annotate_onereference_allunitigs:
     input:
         significance="data/{phenotype}/unitig_significance.txt",
-        reference_file="reference/s_aureus/references_{reference}.txt"
+        reference_file="reference/s_aureus/single_reference_{reference}_tmp.txt"
     output:
         "data/{phenotype}/unitig_annotated_{reference}.txt"
     resources:
@@ -266,4 +280,17 @@ rule annotate_onereference_allunitigs:
     shell:
         """
         annotate_hits_pyseer {input.significance} {input.reference_file} {output}
+        """
+
+rule manhattan_plot:
+    input:
+        unitigs="data/{phenotype}/unitig_annotated_{reference}.txt",
+        limit="data/{phenotype}/significance_limits.txt",
+    output:
+        plot="data/{phenotype}/manhattan_plot_{reference}.pdf"
+    params:
+        color="#1f78b4"
+    shell:
+        """
+        scripts/manhattan_plot.R {input.limit} {input.unitigs} {params.color} {output.plot}
         """
