@@ -27,9 +27,9 @@ localrules:
 
 rule all:
     input:
-        "data/CLX/unitig_significance_annotated.txt",
-        "data/CLX/unitigs_TCH1516_chromosome_position.txt",
-        "data/CLX/manhattan_plot_TCH1516_chromosome.pdf"
+        "data/{phenotype}/unitig_significance_annotated.txt",
+        "data/{phenotype}/unitigs_TCH1516_chromosome_position.txt",
+        "data/{phenotype}/manhattan_plot_TCH1516_chromosome.pdf"
 
 
 def get_path(wildcards):
