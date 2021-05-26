@@ -235,6 +235,9 @@ section of the manhattan_plot rule in the Snakefile.
 
 ## Interpretation of Significant Unitigs
 
+A major componenent of this pipeline is pyseer, which is a microbial GWAS tool using linear mixed models. A good first step in understanding GWAS results is to read through 
+the documentation and tutorials for this software: https://pyseer.readthedocs.io/en/master/.
+
 To visualize significant unitigs, you can use the interactive tools phandango and ITOL for an interactive Manhattan plot and annotated phylogeny, respectively. Additionally,
 the pipeline can create a Manhattan plot figure.
 
