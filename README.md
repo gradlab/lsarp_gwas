@@ -39,13 +39,20 @@ Unitigs are annotated by mapping to a panel of closed, reference genomes represe
 6. 	Lees JA, Galardini M, Bentley SD, Weiser JN, Corander J. pyseer: a comprehensive tool for microbial pangenome-wide association studies. Bioinforma Oxf Engl 2018; 34:4310–4312. 
 7. 	Letunic I, Bork P. Interactive Tree Of Life (iTOL) v4: recent updates and new developments. Nucleic Acids Res.
 
-
+## Quick Start Guide
+1. Install snakemake and activate environment
+2. Clone this repository to your working directory
+3. Make a directory called `software/`
+4. Clone the pyseer repository to `software/`
+5. Make a directory called `data/`
+6. Make a directory within data for your specific phenotype `data/phenotype_name/`
+7. Save input files in `data/sequenced_isolates.txt`, `data/contaminated_isolates.txt`, and `data/phenotype_name/phenotype_name.txt`
+8. Submit pipeline job with `sbatch start_snakemake.sh`
 
 ## Software Requirements
 
 This pipeline is implemented in snakemake. Additionally, there are some helper scripts that are not packaged with pyseer via conda, so the pyseer git repository should be cloned to a software/ directory. Other required software is installed via conda as the pipeline runs. 
 
-**Desired output should be listed under `rule all` in the Snakefile. Please replace the examples listed with appropriate file names for your phenotype and reference genome of choice**
 
 ### conda
 
@@ -57,7 +64,7 @@ Snakemake can be installed via conda. Instructions here: https://snakemake.readt
 
 This pipeline uses a snakemake profile to interact with the slurm job submission system on ARC.
 
-Template config file to be stored in `$HOME/.config/snakemake/slurm/config.yaml`:
+Template config file can be stored in `$HOME/.config/snakemake/slurm/config.yaml` or working directory:
 
 ```
 restart-times: 3
