@@ -47,7 +47,8 @@ Unitigs are annotated by mapping to a panel of closed, reference genomes represe
 5. Make a directory called `data/`
 6. Make a directory within data for your specific phenotype `data/phenotype_name/`
 7. Save input files in `data/sequenced_isolates.txt`, `data/contaminated_isolates.txt`, and `data/phenotype_name/phenotype_name.txt`
-8. Submit pipeline job with `sbatch start_snakemake.sh`
+8. Edit `Snakefile` to list desired output files under `rule all`. (e.g. replace 'CLX' in the example file names with your phenotype name)
+9. Submit pipeline job with `sbatch start_snakemake.sh`
 
 ## Software Requirements
 
