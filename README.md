@@ -63,7 +63,7 @@ Miniconda3 can be installed from https://docs.conda.io/en/latest/miniconda.html.
 
 Snakemake can be installed via conda. Instructions here: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
 
-This pipeline uses a snakemake profile to interact with the slurm job submission system on ARC. The configuration file is in `slurm` in addition to a script that detects the job status from slurm. Jobs that fail due to time or memory limitations will be retried with the requested time/memory doubled for a total of 3 tries (you can change by editing `restart-times` in config). 
+This pipeline uses a snakemake profile to interact with the slurm job submission system on ARC. The configuration file is in `slurm` in addition to a script that detects the job status from slurm. Jobs that fail due to requested time or memory limitations will be retried with the requested time/memory increased for a total of 3 tries (you can change by editing `restart-times` in config). 
 
 This config file can be stored in `$HOME/.config/snakemake/slurm/config.yaml` if you would like to use it for other projects or in your working directory:
 
