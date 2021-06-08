@@ -18,18 +18,18 @@ with open("data/sequenced_isolates.txt", "r") as infile:
 
 
 localrules:
-#    all,
+    all,
     create_unitig_input,
     filter_significant,
     single_reference_file,
     manhattan_plot
 
-#
-#rule all:
-#    input:
-#        "data/{phenotype}/unitig_significance_annotated.txt",
-#        "data/{phenotype}/unitigs_TCH1516_chromosome_position.txt",
-#        "data/{phenotype}/manhattan_plot_TCH1516_chromosome.pdf"
+
+rule all:
+    input:
+        "data/test/unitig_significance_annotated.txt",
+        "data/test/unitigs_TCH1516_chromosome_position.txt",
+        "data/test/manhattan_plot_TCH1516_chromosome.pdf"
 
 
 def get_path(wildcards):

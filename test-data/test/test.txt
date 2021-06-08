@@ -1,4 +1,0 @@
-WGS_ID                  BATCH   phenotype1
-BI-16-0013_MOCUDI_3     pilot   1.36990875
-BI-16-0017_MOCUDI_3     pilot   0.80548875
-BI-16-0028_MOCUDI_3     pilot   1.11414875

@@ -12,3 +12,4 @@ chmod +x Miniconda3-latest-Linux-x86_64.sh
     
 conda create -c conda-forge -c bioconda -n gwas pyseer mamba snakemake-minimal pip ipykernel
 
+    

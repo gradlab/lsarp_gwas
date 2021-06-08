@@ -1,4 +1,0 @@
-BATCH   WGS_ID                  ISOLATE_NBR
-pilot   BI-16-0013_MOCUDI_3     BI_16_0013
-pilot   BI-16-0017_MOCUDI_3     BI_16_0017
-pilot   BI-16-0028_MOCUDI_3     BI_16_0028
