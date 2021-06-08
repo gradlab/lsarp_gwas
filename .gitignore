@@ -4,3 +4,4 @@ snakemake.err
 snakemake.out
 .snakemake/*
 software/*
+.ipynb_checkpoints
