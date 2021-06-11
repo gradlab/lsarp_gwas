@@ -44,12 +44,12 @@ Unitigs are annotated by mapping to a panel of closed, reference genomes represe
 2. Clone this repository to your working directory
 3. Edit `slurm/config.yaml`to reflect the path to your conda installation and ensure that `slum/slurm-status.py` is excecutable
 4. Make a directory called `software/`
-5. Clone the pyseer repository to `software/`
+5. Clone the pyseer repository to `software/` (`git clone https://github.com/mgalardini/pyseer.git`)
 6. Make a directory called `data/`
 7. Make a directory within data for your specific phenotype `data/phenotype_name/`
 8. Save input files in `data/sequenced_isolates.txt`, `data/contaminated_isolates.txt`, and `data/phenotype_name/phenotype_name.txt`
-9. Edit `Snakefile` to list desired output files under `rule all`. (e.g. replace 'CLX' in the example file names with your phenotype name)
-10. Submit pipeline job with `sbatch start_snakemake.sh`
+9. Edit `Snakefile` to list desired output files under `rule all`. (e.g. replace 'test' in the example file names with your phenotype name)
+10. Submit pipeline job with `sbatch start_snakemake.sh` (add email to `start_snakemake.sh` if you would like to receive email updates on your job)
 
 ## Software Requirements
 
