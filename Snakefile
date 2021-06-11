@@ -57,7 +57,7 @@ rule annotation:
         "conda_envs/prokka.yml"
     shell:
         """
-        mkdir -p annotations/{params.batch}
+        mkdir -p data/annotations/{params.batch}
         prokka --force --outdir data/annotations/{params.batch}/{params.name} --prefix {params.name} --locustag {params.name} --genus Staphylococcus --species aureus --strain {params.name} --usegenus --cpus 8 {input.fasta}
         """
 
