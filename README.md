@@ -42,12 +42,12 @@ Unitigs are annotated by mapping to a panel of closed, reference genomes represe
 ## Quick Start Guide
 1. Install snakemake and activate environment
 2. Clone this repository to your working directory
-3. Edit `slurm/config.yaml`to reflect the path to your conda installation and ensure that `slum/slurm-status.py` is excecutable
+3. Edit `slurm/config.yaml`to reflect the path to your conda installation and ensure that `slurm/slurm-status.py` is excecutable
 4. Make a directory called `software/`
 5. Clone the pyseer repository to `software/` (`git clone https://github.com/mgalardini/pyseer.git`)
-6. Make a directory called `data/`
+6. **Optional test:** skip directly to step 10 and run test files.
 7. Make a directory within data for your specific phenotype `data/phenotype_name/`
-8. Save input files in `data/sequenced_isolates.txt`, `data/contaminated_isolates.txt`, and `data/phenotype_name/phenotype_name.txt`
+8. Save or update input files in `data/sequenced_isolates.txt`, `data/contaminated_isolates.txt`, and `data/phenotype_name/phenotype_name.txt`
 9. Edit `Snakefile` to list desired output files under `rule all`. (e.g. replace 'test' in the example file names with your phenotype name)
 10. Submit pipeline job with `sbatch start_snakemake.sh` (add email to `start_snakemake.sh` if you would like to receive email updates on your job)
 
@@ -219,6 +219,16 @@ Recombination detection and phylogeny by Gubbins (https://sanger-pathogens.githu
 
 ### gwas output (directory named by phenotype)
 
+#### manhattan_plot_[reference].pdf
+PDF of a Manhattan plot with unitigs mapped to a single reference. The color of significant points is dark blue by default, but that can be changed by editing the params
+section of the manhattan_plot rule in the Snakefile.
+
+#### remaining_kmers.fa
+A fasta file of any significant unitigs that did not map to the panel of reference genomes.
+
+#### remaining_kmers.txt
+A text file of any significant unitigs that did not map to the panel of reference genomes.
+
 #### significance_limits.txt
 File describing appropriate Bonferroni corrected significance threshold for unitig p-values
 
@@ -241,10 +251,6 @@ Manhattan plot in your browser.
 #### unitigs_annotated_[reference].txt
 All unitigs annotated according to a single reference
 
-#### manhattan_plot_[reference].pdf
-PDF of a Manhattan plot with unitigs mapped to a single reference. The color of significant points is dark blue by default, but that can be changed by editing the params
-section of the manhattan_plot rule in the Snakefile.
-
 ## Interpretation of Significant Unitigs
 
 A major componenent of this pipeline is pyseer, which is a microbial GWAS tool using linear mixed models. A good first step in understanding GWAS results is to read through 
@@ -265,6 +271,6 @@ To make an annotation file for a specific unitig, you can use the `unitig_to_ito
 potentially hundreds of significant unitigs to choose from. The output from this script can be dropped into ITOL (https://itol.embl.de/) along with the phylogeny (`data/gubbins/gubbins/core_alignment.final_tree.tre`) to view the distribution of the significant unitig across samples.
 
 ### Choosing a reference for annotation
-A panel of reference genomes representing several lineages of _S. aureus_ is available in the `reference/s_aureus` directory. They are named using a standardized naming scheme, so if for example you would like to use `s_aureus_MW2_chromosome.fasta` as the reference, the pipeline will recognize output file names with `MW2_chromosome` in the name.
+A panel of reference genomes representing several lineages of _S. aureus_ is available in the `reference/s_aureus` directory. They are named using a standardized naming scheme, so if for example you would like to use `s_aureus_MW2_chromosome.fasta` as the reference, the pipeline will recognize output file names with `MW2_chromosome` in the name. The test run uses the TCH1516_chromosome as the reference, which is a USA300 strain.
 
 If you aren't sure which single reference genome you want to use, you can take the output of significant unitigs mapped to the whole panel (`unitig_significance_annotated.txt`) and check which reference was chosen for the most significant unitigs using `find_closest_reference_sig_unitigs.R`.
