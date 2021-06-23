@@ -1,5 +1,5 @@
-restart-times: 3
-cluster: "sbatch -t {resources.time} --nodes 1 --ntasks 1 --cpus-per-task {resources.cpus} --mem={resources.mem_mb} -o logs/slurm/{rule}_{wildcards}.out -e logs/slurm/{rule}_{wildcards}.err"
+restart-times: 1
+cluster: "sbatch --parsable -t {resources.time} --nodes 1 --ntasks 1 --cpus-per-task {resources.cpus} --mem={resources.mem_mb} -o logs/slurm/{rule}_{wildcards}.out -e logs/slurm/{rule}_{wildcards}.err"
 default-resources: [cpus=1, mem_mb=1000, time=60]
 max-jobs-per-second: 1
 max-status-checks-per-second: 10
