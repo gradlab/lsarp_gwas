@@ -50,7 +50,7 @@ rule annotation:
     resources:
         cpus=8,
         mem_mb=lambda wildcards, attempt: attempt * 8000,
-        time=lambda wildcards, attempt: attempt * 30,
+        time=lambda wildcards, attempt: attempt * 60,
     log:
         "logs/annotation/{batch}/{sample}.log",
     conda:
@@ -71,8 +71,8 @@ rule roary:
             sample=SAMPLES,
         ),
     output:
-        "data/roary/roary/gene_presence_absence.csv",
-        "data/roary/roary/core_gene_alignment.aln",
+        "data/roary/gene_presence_absence.csv",
+        "data/roary/core_gene_alignment.aln",
     params:
     resources:
         cpus=12,
@@ -84,15 +84,16 @@ rule roary:
         "conda_envs/roary.yml"
     shell:
         """
-        roary -p 12 -z -e -n -v -s -i 95 -f ./data/roary/roary {input}
+        rm -rf data/roary
+        roary -p 12 -z -e -n -v -s -i 95 -f ./data/roary {input}
         """
 
 
 rule gubbins:
     input:
-        "data/roary/roary/core_gene_alignment.aln",
+        "data/roary/core_gene_alignment.aln",
     output:
-        "data/gubbins/gubbins/core_alignment.final_tree.tre",
+        "data/gubbins/core_alignment.final_tree.tre",
     params:
     resources:
         cpus=12,
@@ -105,7 +106,7 @@ rule gubbins:
     shell:
         """
         mkdir -p data/gubbins
-        run_gubbins.py --threads {resources.cpus} --prefix data/gubbins/gubbins/core_alignment {input}
+        run_gubbins.py --threads {resources.cpus} --prefix data/gubbins/core_alignment {input}
         """
 
 
@@ -151,9 +152,9 @@ rule unitigs:
 
 rule similarity_matrix:
     input:
-        tree="data/gubbins/gubbins/core_alignment.final_tree.tre",
+        tree="data/gubbins/core_alignment.final_tree.tre",
     output:
-        matrix="data/gubbins/gubbins/similarity_matrix.txt",
+        matrix="data/gubbins/similarity_matrix.txt",
     params:
     resources:
         cpus=1,
@@ -171,7 +172,7 @@ rule lmm_gwas:
     input:
         pheno="data/{phenotype}/{phenotype}.txt",
         unitigs="data/unitigs/s_aureus_unitigs/unitigs.txt",
-        similarity="data/gubbins/gubbins/similarity_matrix.txt",
+        similarity="data/gubbins/similarity_matrix.txt",
     output:
         patterns="data/{phenotype}/unitig_patterns.txt",
         significance="data/{phenotype}/unitig_significance.txt",
@@ -222,9 +223,14 @@ rule filter_significant:
 rule annotate:
     input:
         unitig_filtered="data/{phenotype}/unitig_significance_filtered.txt",
-        reference="reference/s_aureus/references.txt"
+        reference="reference/s_aureus/references.txt",
     output:
-        "data/{phenotype}/unitig_significance_annotated.txt"
+        annotated="data/{phenotype}/unitig_significance_annotated.txt",
+        unannotated_fasta="data/{phenotype}/remaining_kmers.fa",
+        unannotated_text="data/{phenotype}/remaining_kmers.txt"
+    params:
+        out_dir="data/{phenotype}/"
+    shadow: "shallow"
     resources:
         cpus=1,
         mem_mb=1000,
@@ -233,7 +239,9 @@ rule annotate:
         "conda_envs/pyseer.yml"
     shell:
         """
-        annotate_hits_pyseer {input.unitig_filtered} {input.reference} {output}
+        annotate_hits_pyseer {input.unitig_filtered} {input.reference} {output.annotated}
+        mv remaining_kmers.fa {params.out_dir}
+        mv remaining_kmers.txt {params.out_dir}
         """
 
 rule phandango_input:
@@ -270,7 +278,8 @@ rule annotate_onereference_allunitigs:
         significance="data/{phenotype}/unitig_significance.txt",
         reference_file="reference/s_aureus/single_reference_{reference}_tmp.txt"
     output:
-        "data/{phenotype}/unitig_annotated_{reference}.txt"
+        annotated_singleref="data/{phenotype}/unitig_annotated_{reference}.txt",
+    shadow: "shallow"
     resources:
         cpus=1,
         mem_mb=1000,
@@ -279,7 +288,7 @@ rule annotate_onereference_allunitigs:
         "conda_envs/pyseer.yml"
     shell:
         """
-        annotate_hits_pyseer {input.significance} {input.reference_file} {output}
+        annotate_hits_pyseer {input.significance} {input.reference_file} {output.annotated_singleref}
         """
 
 rule manhattan_plot:
