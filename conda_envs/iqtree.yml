@@ -1,0 +1,14 @@
+name: iqtree
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+  - r
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=1_gnu
+  - iqtree=2.2.0_beta=hb97b32f_1
+  - libgcc-ng=11.2.0=h1d223b6_14
+  - libgomp=11.2.0=h1d223b6_14
+  - libstdcxx-ng=11.2.0=he4da1e4_14
+  - libzlib=1.2.11=h166bdaf_1014
