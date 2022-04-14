@@ -1,4 +1,4 @@
-PHENOTYPE_FILE = "data/test.txt"
+PHENOTYPE_FILE = "data/test/test.txt"
 SAMPLES = []
 
 with open(PHENOTYPE_FILE, "r") as infile:
