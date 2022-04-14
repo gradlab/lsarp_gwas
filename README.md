@@ -47,7 +47,7 @@ Unitigs are annotated by mapping to a panel of closed, reference genomes represe
 5. Clone the pyseer repository to `software/` (`git clone https://github.com/mgalardini/pyseer.git`)
 6. **Optional test:** skip directly to step 10 and run test files.
 7. Make a directory within data for your specific phenotype `data/phenotype_name/`
-8. Save or update input files in `data/sequenced_isolates.txt`, `data/contaminated_isolates.txt`, and `data/phenotype_name/phenotype_name.txt`
+8. Save or update input files in `data/phenotype_name/phenotype_name.txt`
 9. Edit `Snakefile` to list desired output files under `rule all`. (e.g. replace 'test' in the example file names with your phenotype name)
 10. Submit pipeline job with `sbatch start_snakemake.sh` (add email to `start_snakemake.sh` if you would like to receive email updates on your job)
 
@@ -148,37 +148,16 @@ example: `scripts/unitig_to_itol.py data/unitigs/s_aureus_unitigs/unitigs.txt AC
 
 ## Input Details
 
-### data/sequenced_isolates.txt
-A tab-delimited list of sequenced isolates with batch numbers and alternate ids used in WGS data.
-
-Format:
-```
-BATCH   WGS_ID                  ISOLATE_NBR
-pilot   BI-16-0013_MOCUDI_3     BI_16_0013
-pilot   BI-16-0017_MOCUDI_3     BI_16_0017
-pilot   BI-16-0028_MOCUDI_3     BI_16_0028
-```
-### data/contaminated_isolates.txt
-A list of WGS_IDs with evidence of contamination (will not be included in downstream analysis).
-
-Format:
-```
-WGS_ID
-BI_17_0054
-BI-16-0629_MOCUDI_4
-BI-16-0089_MOCUDI_3
-```
-
 ### phenotype file
-The file with phenotypic information for the GWAS. Binary phenotypes should be represented by 0 or 1. This file should be stored in `data/phenotype1/phenotype1.txt` (with the actual phenotype name, not the word "phenotype1")
+The tab-delimited file with phenotypic information for the GWAS. Binary phenotypes should be represented by 0 or 1. This file should be stored in `data/phenotype1/phenotype1.txt` (with the actual phenotype name, not the word "phenotype1")
 
 Format:
 
 ```
-WGS_ID                  BATCH   phenotype1
-BI-16-0013_MOCUDI_3     pilot   1.36990875
-BI-16-0017_MOCUDI_3     pilot   0.80548875
-BI-16-0028_MOCUDI_3     pilot   1.11414875
+BI_NBR         phenotype1
+BI_16_0013     1.36990875
+BI_16_0017     0.80548875
+BI_16_0028     1.11414875
 ```
 ### Directory Structure when you start
 
@@ -188,8 +167,6 @@ GWAS_directory/
     start_snakemake.sh
     conda_envs/
     data/
-        sequenced_isolates.txt
-        contaminated_isolates.txt
         phenotype1/
             phenotype1.txt
     reference/
