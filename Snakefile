@@ -1,20 +1,11 @@
-contaminated_samples = []
-with open("data/contaminated_samples.txt", "r") as infile:
-    for i, line in enumerate(infile):
-        if i > 0:
-            line = line.strip()
-            contaminated_samples.append(line)
-
-BATCHES = []
+PHENOTYPE_FILE = "data/test.txt"
 SAMPLES = []
 
-with open("data/sequenced_isolates.txt", "r") as infile:
+with open(PHENOTYPE_FILE, "r") as infile:
     for i, line in enumerate(infile):
         if i > 0:
             line = line.strip().split()
-            if line[1] not in contaminated_samples:
-                BATCHES.append(line[0])
-                SAMPLES.append(line[1])
+            SAMPLES.append(line[0])
 
 
 localrules:
@@ -33,10 +24,7 @@ rule all:
 
 
 def get_path(wildcards):
-    if wildcards.batch == "batch_2":
-        return "/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/{batch}/results/{sample}/LSARP_Results/Assembly/{sample}.genome.fa"
-    else:
-        return "/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/{batch}/final_results/{sample}/Assembly/{sample}.genome.fa"
+    return "/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/results/{sample}/LSARP_Results/Assembly/{sample}.genome.fa"
 
 
 rule annotation:
@@ -44,30 +32,27 @@ rule annotation:
         fasta=get_path,
     params:
         name="{sample}",
-        batch="{batch}",
     output:
-        gff="data/annotations/{batch}/{sample}/{sample}.gff",
+        gff="data/annotations/{sample}/{sample}.gff",
     resources:
         cpus=8,
         mem_mb=lambda wildcards, attempt: attempt * 8000,
         time=lambda wildcards, attempt: attempt * 60,
     log:
-        "logs/annotation/{batch}/{sample}.log",
+        "logs/annotation/{sample}.log",
     conda:
         "conda_envs/prokka.yml"
     shell:
         """
         mkdir -p data/annotations/{params.batch}
-        prokka --force --outdir data/annotations/{params.batch}/{params.name} --prefix {params.name} --locustag {params.name} --genus Staphylococcus --species aureus --strain {params.name} --usegenus --cpus 8 {input.fasta}
+        prokka --force --outdir data/annotations/{params.name} --prefix {params.name} --locustag {params.name} --genus Staphylococcus --species aureus --strain {params.name} --usegenus --cpus 8 {input.fasta}
         """
 
 
 rule roary:
     input:
         expand(
-            "data/annotations/{batch}/{sample}/{sample}.gff",
-            zip,
-            batch=BATCHES,
+            "data/annotations/{sample}/{sample}.gff",
             sample=SAMPLES,
         ),
     output:
@@ -112,28 +97,24 @@ rule gubbins:
 
 rule create_unitig_input:
     input:
-        "data/sequenced_isolates.txt",
-        "data/contaminated_samples.txt",
+        "data/{phenotype}.txt",
     output:
-        strain_list="data/unitigs/strain_list.txt"
+        strain_list="data/unitigs/strain_list_{phenotype}.txt"
     run:
         with open(output.strain_list, "w") as outfile:
             outfile.write("wgs_id\tpath\n")
-            for sample, batch in zip(SAMPLES, BATCHES):
-                if batch == "batch_2":
-                    path = f"/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/{batch}/results/{sample}/LSARP_Results/Assembly/{sample}.genome.fa"
-                else:
-                    path = f"/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/{batch}/final_results/{sample}/Assembly/{sample}.genome.fa"
+            for sample in SAMPLES:
+                path = f"/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/results/{sample}/LSARP_Results/Assembly/{sample}.genome.fa"
                 outfile.write(f"{sample}\t{path}\n")
 
 
 rule unitigs:
     input:
-        strain_list="data/unitigs/strain_list.txt",
+        strain_list="data/unitigs/strain_list_{phenotype}.txt",
     output:
-        "data/unitigs/s_aureus_unitigs/unitigs.txt",
+        "data/unitigs/s_aureus_{phenotype}/unitigs.txt",
     params:
-        directory="data/unitigs/s_aureus_unitigs/",
+        directory="data/unitigs/s_aureus_{phenotype}/",
     resources:
         cpus=4,
         mem_mb=lambda wildcards, attempt: attempt * 10000,
@@ -171,7 +152,7 @@ rule similarity_matrix:
 rule lmm_gwas:
     input:
         pheno="data/{phenotype}/{phenotype}.txt",
-        unitigs="data/unitigs/s_aureus_unitigs/unitigs.txt",
+        unitigs="data/unitigs/s_aureus_{phenotype}/unitigs.txt",
         similarity="data/gubbins/similarity_matrix.txt",
     output:
         patterns="data/{phenotype}/unitig_patterns.txt",
@@ -185,7 +166,7 @@ rule lmm_gwas:
         "conda_envs/pyseer.yml"
     shell:
         """
-        pyseer --lmm --phenotypes {input.pheno} --similarity {input.similarity} --uncompressed --kmers {input.unitigs} --phenotype-column {wildcards.phenotype} --covariates {input.pheno} --use-covariates 2 --output-patterns {output.patterns} --cpu 1 > {output.significance}
+        pyseer --lmm --phenotypes {input.pheno} --similarity {input.similarity} --uncompressed --kmers {input.unitigs} --phenotype-column {wildcards.phenotype} --output-patterns {output.patterns} --cpu 1 > {output.significance}
         """
 
 
