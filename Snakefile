@@ -24,7 +24,7 @@ rule all:
 
 
 def get_path(wildcards):
-    return "/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/results/{sample}/LSARP_Results/Assembly/{sample}.genome.fa"
+    return "/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/results/{sample}/Assembly/{sample}.genome.fa"
 
 
 rule annotation:
@@ -44,7 +44,7 @@ rule annotation:
         "conda_envs/prokka.yml"
     shell:
         """
-        mkdir -p data/annotations/{params.batch}
+        mkdir -p data/annotations/
         prokka --force --outdir data/annotations/{params.name} --prefix {params.name} --locustag {params.name} --genus Staphylococcus --species aureus --strain {params.name} --usegenus --cpus 8 {input.fasta}
         """
 
@@ -97,14 +97,14 @@ rule gubbins:
 
 rule create_unitig_input:
     input:
-        "data/{phenotype}.txt",
+        "data/{phenotype}/{phenotype}.txt",
     output:
         strain_list="data/unitigs/strain_list_{phenotype}.txt"
     run:
         with open(output.strain_list, "w") as outfile:
             outfile.write("wgs_id\tpath\n")
             for sample in SAMPLES:
-                path = f"/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/results/{sample}/LSARP_Results/Assembly/{sample}.genome.fa"
+                path = f"/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/results/{sample}/Assembly/{sample}.genome.fa"
                 outfile.write(f"{sample}\t{path}\n")
 
 
@@ -120,7 +120,7 @@ rule unitigs:
         mem_mb=lambda wildcards, attempt: attempt * 10000,
         time=lambda wildcards, attempt: attempt * 480,
     log:
-        "logs/unitig-counter.log",
+        "logs/unitig-counter-{phenotype}.log",
     conda:
         "conda_envs/unitig-counter.yml"
     shell:
