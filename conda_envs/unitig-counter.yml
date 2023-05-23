@@ -6,10 +6,11 @@ channels:
   - r
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
-  - _openmp_mutex=4.5=1_gnu
-  - libgcc-ng=9.3.0=h2828fa1_18
-  - libgomp=9.3.0=h2828fa1_18
-  - libstdcxx-ng=9.3.0=h6de172a_18
+  - _openmp_mutex=4.5=2_gnu
+  - libgcc-ng=12.2.0=h65d4601_19
+  - libgomp=12.2.0=h65d4601_19
+  - libstdcxx-ng=12.2.0=h46fd767_19
+  - libzlib=1.2.13=h166bdaf_4
   - pthread-stubs=0.4=h36c2ea0_1001
   - unitig-counter=1.1.0=h56fc30b_0
-  - zlib=1.2.11=h516909a_1010
+  - zlib=1.2.13=h166bdaf_4
