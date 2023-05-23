@@ -23,36 +23,9 @@ rule all:
         "data/test/manhattan_plot_TCH1516_chromosome.pdf"
 
 
-def get_path(wildcards):
-    return "/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/results/{sample}/Assembly/{sample}.genome.fa"
-
-
-rule annotation:
-    input:
-        fasta=get_path,
-    params:
-        name="{sample}",
-    output:
-        gff="data/annotations/{sample}/{sample}.gff",
-    resources:
-        cpus=8,
-        mem_mb=lambda wildcards, attempt: attempt * 8000,
-        time=lambda wildcards, attempt: attempt * 60,
-    log:
-        "logs/annotation/{sample}.log",
-    conda:
-        "conda_envs/prokka.yml"
-    shell:
-        """
-        mkdir -p data/annotations/
-        prokka --force --outdir data/annotations/{params.name} --prefix {params.name} --locustag {params.name} --genus Staphylococcus --species aureus --strain {params.name} --usegenus --cpus 8 {input.fasta}
-        """
-
-
 rule roary:
     input:
-        expand(
-            "data/annotations/{sample}/{sample}.gff",
+        expand("/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/results/{sample}/Annotation/{sample}.gff",
             sample=SAMPLES,
         ),
     output:
