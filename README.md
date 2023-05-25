@@ -23,7 +23,7 @@ similiarity matrix + unitigs + phenotype -> LMM -> significant unitigs -> annota
 Details of the software used can be found by reading the Snakefile.
 
 ### Core genome alignment and phylogeny
-Genomes are annotated with Prokka v 1.14 [1] using genus specific databases when available, and the core genome is identified using Roary v 3.13 [2] with a 95% identity cutoff and aligned with MAFFT [3]. To understand the population structure of our dataset, we generate a maximum likelihood phylogeny [4], which is based on the core genome alignment.
+The core genome is identified using Roary v 3.13 [2], using annotations from Prokka [1], with a 95% identity cutoff and aligned with MAFFT [3]. To understand the population structure of our dataset, we generate a maximum likelihood phylogeny [4], which is based on the core genome alignment.
 ### Unitig presence matrix
 To summarize the genomic variation in our sample, unitigs (unique sequences of variable length) are identified and counted using unitig-counter (https://github.com/johnlees/unitig-counter), which uses a compressed de Bruijn graph and is based on the approach in DBGWAS [5].
 ### Genome wide association study (GWAS) using linear mixed model (LMM)
@@ -59,6 +59,8 @@ This pipeline is implemented in snakemake. Additionally, there are some helper s
 ### conda
 
 Miniconda3 can be installed from https://docs.conda.io/en/latest/miniconda.html.
+
+If you have having trouble with automatic software install via conda, try setting channel priority to flexible using the following command: `conda config --set channel_priority flexible`
 
 ### Snakemake
 
