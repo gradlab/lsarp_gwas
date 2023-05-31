@@ -253,3 +253,7 @@ potentially hundreds of significant unitigs to choose from. The output from this
 A panel of reference genomes representing several lineages of _S. aureus_ is available in the `reference/s_aureus` directory. They are named using a standardized naming scheme, so if for example you would like to use `s_aureus_MW2_chromosome.fasta` as the reference, the pipeline will recognize output file names with `MW2_chromosome` in the name. The test run uses the TCH1516_chromosome as the reference, which is a USA300 strain.
 
 If you aren't sure which single reference genome you want to use, you can take the output of significant unitigs mapped to the whole panel (`unitig_significance_annotated.txt`) and check which reference was chosen for the most significant unitigs using `find_closest_reference_sig_unitigs.R`.
+
+## Alternate versions of the pipeline
+
+If you already have a phylogeny for the samples in your dataset, you can skip a few steps in the pipeline. To use this version of the pipeline, copy the Snakefile in the `alternate_snakefile` directory to the main directory and edit the variable "TREE_FILE" at the top.
