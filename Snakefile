@@ -11,9 +11,7 @@ with open(PHENOTYPE_FILE, "r") as infile:
 localrules:
     all,
     create_unitig_input,
-    filter_significant,
     single_reference_file,
-    manhattan_plot
 
 
 rule all:
@@ -168,9 +166,10 @@ rule filter_significant:
         unitig_significance="data/{phenotype}/unitig_significance.txt",
     output:
         "data/{phenotype}/unitig_significance_filtered.txt",
+    conda:
+        "conda_envs/tidyverse.yml"
     shell:
         """
-        module load R
         Rscript scripts/filter_significant_unitigs.R {input.limit} {input.unitig_significance} {output}
         """
 
@@ -253,8 +252,9 @@ rule manhattan_plot:
         plot="data/{phenotype}/manhattan_plot_{reference}.pdf"
     params:
         color="'#1f78b4'"
+    conda:
+        "conda_envs/tidyverse.yml"
     shell:
         """
-        module load R
         Rscript scripts/manhattan_plot.R {input.limit} {input.unitigs} {params.color} {output.plot}
         """
