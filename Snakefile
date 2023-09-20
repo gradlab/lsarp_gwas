@@ -23,33 +23,33 @@ rule all:
         "data/test/manhattan_plot_TCH1516_chromosome.pdf"
 
 
-rule roary:
+rule panaroo:
     input:
         expand("/bulk/LSARP/genomics/pipeline/Staphylococcus_aureus/results/{sample}/Annotation/{sample}.gff",
             sample=SAMPLES,
         ),
     output:
-        "data/roary/gene_presence_absence.csv",
-        "data/roary/core_gene_alignment.aln",
+        "data/panaroo/gene_presence_absence.csv",
+        "data/panaroo/core_gene_alignment_filtered.aln",
     params:
     resources:
         cpus=12,
         mem_mb=lambda wildcards, attempt: attempt * 16000,
         time=lambda wildcards, attempt: attempt * 1200,
     log:
-        "logs/roary.log",
+        "logs/panaroo.log",
     conda:
-        "conda_envs/roary.yml"
+        "conda_envs/panaroo.yml"
     shell:
         """
-        rm -rf data/roary
-        roary -p 12 -z -e -n -v -s -i 95 -f ./data/roary {input}
+        rm -rf data/panaroo
+        roary -t 12 --clean-mode strict -a core -o ./data/panaroo -i {input}
         """
 
 
 rule gubbins:
     input:
-        "data/roary/core_gene_alignment.aln",
+        "data/panaroo/core_gene_alignment_filtered.aln",
     output:
         "data/gubbins/core_alignment.final_tree.tre",
     params:
