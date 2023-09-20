@@ -3,11 +3,11 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=2000
-#SBATCH -p cpu2019
-#SBATCH -t 3-00:00
+#SBATCH -p cpu2021
+#SBATCH -t 1-00:00
 #SBATCH -o snakemake.out
 #SBATCH -e snakemake.err
-#SBATCH --mail-type=END
+#SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=
 
 mkdir -p logs/slurm
