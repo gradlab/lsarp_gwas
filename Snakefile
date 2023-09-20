@@ -43,7 +43,7 @@ rule panaroo:
     shell:
         """
         rm -rf data/panaroo
-        roary -t 12 --clean-mode strict -a core -o ./data/panaroo -i {input}
+        panaroo -t 12 --clean-mode strict -a core -o ./data/panaroo -i {input}
         """
 
 
