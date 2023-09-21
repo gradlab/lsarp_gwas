@@ -58,13 +58,20 @@ This pipeline is implemented in snakemake. Additionally, there are some helper s
 
 ### conda
 
-Miniconda3 can be installed from https://docs.conda.io/en/latest/miniconda.html.
+Mambaforge can be installed following these steps:
+1. Download mambaforge: `wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh`
+2. Run the installation script: `bash Mambaforge-Linux-x86_64.sh`
+3. Mambaforge will be installed in your home directory
+4. Choose `yes` when asked if you would like the installer to initialize Mambaforge
+5. Exit and reconnect to the cluster
 
 If you have having trouble with automatic software install via conda, try setting channel priority to flexible using the following command: `conda config --set channel_priority flexible`
 
 ### Snakemake
 
-Snakemake can be installed via conda. Instructions here: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+Snakemake can be installed via mamba (e.g. `mamba create -c conda-forge -c bioconda -n snakemake snakemake`). Instructions here: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+
+You will need to activate your snakemake conda environment before trying to run the pipeline (`mamba activate snakemake`).
 
 This pipeline uses a snakemake profile to interact with the slurm job submission system on ARC. The configuration file is in `slurm` in addition to a script that detects the job status from slurm. Jobs that fail due to requested time or memory limitations will be retried with the requested time/memory increased for a total of 3 tries (you can change by editing `restart-times` in config). 
 
