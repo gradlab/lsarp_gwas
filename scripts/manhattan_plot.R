@@ -6,11 +6,15 @@ limits <- read_tsv(arguments[1], col_names = F)
 p_threshold <- limits[[2,2]]
 
 unitigs <- read_tsv(arguments[2], 
-                    col_names = c("unitig", "af", "filter_p", "lrt_p", "beta", "beta_std_err", "h2", "notes", "annotation"))
+                    col_names = c("unitig", "af", "filter_p", "lrt_p", "beta", "beta_std_err", "h2", "annotation"))
 
-unitigs <- unitigs %>% mutate(annotation = ifelse(is.na(annotation), notes, annotation))
+unitigs <- unitigs %>% separate_wider_delim(annotation, delim = "\t", names = c("notes", "annotation"), too_few = "align_end")
 
-unitigs <- unitigs %>% separate(annotation, c("annotation1", "annotation2", "annotation3", "annotation4", "annotation5", "annotation6"), sep = ',') %>%
+
+unitigs <- unitigs %>% separate_wider_delim(annotation, 
+                                            names = c("annotation1", "annotation2", "annotation3", "annotation4", "annotation5", "annotation6"), 
+                                            delim = ',',
+                                            too_few = "align_start") %>%
   pivot_longer(annotation1:annotation6, names_to = "annotation_number", values_to = "annotation", values_drop_na = T) %>%
   separate(annotation, c("reference", "location"), sep = ":") %>%
   separate(location, c("coordinates", "gene"), sep = ";") %>%
